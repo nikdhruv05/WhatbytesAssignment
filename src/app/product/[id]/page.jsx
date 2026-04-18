@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getProductById } from "@/data/products";
+import { ProductDetailClient } from "@/components/product-detail-client";
 
 export default async function ProductPage({ params }) {
   const { id } = await params;
@@ -8,18 +9,14 @@ export default async function ProductPage({ params }) {
   if (!product) notFound();
 
   return (
-    <main className="mx-auto max-w-3xl px-4 py-10">
+    <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
       <Link
         href="/"
-        className="text-sm font-medium text-[#2b5a9e] hover:underline"
+        className="text-sm font-semibold text-[#2b5a9e] hover:underline"
       >
         ← Back to listing
       </Link>
-      <h1 className="mt-6 text-3xl font-bold text-[#1a2b4b]">{product.title}</h1>
-      <p className="mt-2 text-xl font-semibold text-[#1a2b4b]">${product.price}</p>
-      <p className="mt-4 text-zinc-600">
-        Full product detail layout can be expanded here.
-      </p>
+      <ProductDetailClient product={product} />
     </main>
   );
 }
