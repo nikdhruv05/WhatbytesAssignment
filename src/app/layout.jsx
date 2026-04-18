@@ -1,4 +1,5 @@
 import { Inter } from "next/font/google";
+import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
 import { Providers } from "@/components/providers";
 import "./globals.css";
@@ -16,10 +17,11 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${inter.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col font-sans">
+      <body className="flex min-h-full flex-col font-sans">
         <Providers>
           <Header />
-          {children}
+          <div className="flex min-h-0 flex-1 flex-col">{children}</div>
+          <Footer />
         </Providers>
       </body>
     </html>
