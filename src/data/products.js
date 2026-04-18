@@ -14,6 +14,7 @@ export const PRODUCTS = [
     price: 99,
     category: "clothing",
     brand: "Nike",
+    rating: 4.5,
     images: [u("/photo-1542291026-7eec264c27ff")],
   },
   {
@@ -22,6 +23,7 @@ export const PRODUCTS = [
     price: 149,
     category: "electronics",
     brand: "Sony",
+    rating: 4.8,
     images: [u("/photo-1505740420928-5e560c06d30e")],
   },
   {
@@ -30,6 +32,7 @@ export const PRODUCTS = [
     price: 129,
     category: "clothing",
     brand: "Adidas",
+    rating: 4.2,
     images: [u("/photo-1553062407-98eeb64c6a62")],
   },
   {
@@ -38,6 +41,7 @@ export const PRODUCTS = [
     price: 249,
     category: "electronics",
     brand: "Samsung",
+    rating: 4.6,
     images: [u("/photo-1523275335684-37898b6baf30")],
   },
   {
@@ -46,6 +50,7 @@ export const PRODUCTS = [
     price: 149,
     category: "clothing",
     brand: "Ray-Ban",
+    rating: 4.4,
     images: [u("/photo-1572635196237-14b3f281503f")],
   },
   {
@@ -54,6 +59,7 @@ export const PRODUCTS = [
     price: 499,
     category: "electronics",
     brand: "Canon",
+    rating: 4.7,
     images: [u("/photo-1516035069371-29a1b244ccff")],
   },
   {
@@ -62,6 +68,7 @@ export const PRODUCTS = [
     price: 29,
     category: "clothing",
     brand: "Uniqlo",
+    rating: 4.1,
     images: [u("/photo-1521572163474-6864f9cf17ab")],
   },
   {
@@ -70,6 +77,7 @@ export const PRODUCTS = [
     price: 699,
     category: "electronics",
     brand: "Apple",
+    rating: 4,
     featured: true,
     images: [
       u("/photo-1511707171634-5f897ff02aa9"),
@@ -79,3 +87,7 @@ export const PRODUCTS = [
 ];
 
 export const PRICE_SLIDER_BOUNDS = { min: 0, max: 5000 };
+
+export function getProductById(id) {
+  return PRODUCTS.find((p) => p.id === id);
+}

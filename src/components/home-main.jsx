@@ -6,6 +6,7 @@ import {
   PRODUCTS,
 } from "@/data/products";
 import { FilterSidebar } from "@/components/filter-sidebar";
+import { ProductCard } from "@/components/product-card";
 
 function brandsForCategory(categoryId) {
   const list =
@@ -15,13 +16,13 @@ function brandsForCategory(categoryId) {
   return [...new Set(list.map((p) => p.brand))].sort();
 }
 
-function countMatching({ category, priceMin, priceMax, brands }) {
+function getFilteredProducts({ category, priceMin, priceMax, brands }) {
   return PRODUCTS.filter((p) => {
     if (category !== "all" && p.category !== category) return false;
     if (p.price < priceMin || p.price > priceMax) return false;
     if (brands.length > 0 && !brands.includes(p.brand)) return false;
     return true;
-  }).length;
+  });
 }
 
 export function HomeMain() {
@@ -41,9 +42,9 @@ export function HomeMain() {
     );
   }, [category, availableBrands]);
 
-  const matchCount = useMemo(
+  const filteredProducts = useMemo(
     () =>
-      countMatching({
+      getFilteredProducts({
         category,
         priceMin,
         priceMax,
@@ -84,11 +85,25 @@ export function HomeMain() {
 
         <section className="min-w-0 flex-1 rounded-2xl border border-zinc-200/80 bg-white p-6 shadow-sm">
           <h1 className="text-2xl font-bold text-[#1a2b4b]">Product listing</h1>
-          <p className="mt-2 text-zinc-600">
-            <span className="font-medium text-[#2b5a9e]">{matchCount}</span>{" "}
-            {matchCount === 1 ? "product matches" : "products match"} your
-            filters. Product cards will appear here next.
+          <p className="mt-1 text-sm text-zinc-600">
+            <span className="font-semibold text-[#2b5a9e]">
+              {filteredProducts.length}
+            </span>{" "}
+            {filteredProducts.length === 1 ? "product" : "products"}
           </p>
+
+          {filteredProducts.length === 0 ? (
+            <p className="mt-10 text-center text-zinc-500">
+              No products match your filters. Try adjusting category, price, or
+              brand.
+            </p>
+          ) : (
+            <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {filteredProducts.map((product) => (
+                <ProductCard key={product.id} product={product} showRating />
+              ))}
+            </div>
+          )}
         </section>
       </div>
     </main>

@@ -3,6 +3,7 @@
 import { Search, ShoppingCart, User } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
+import { useCart } from "@/context/cart-context";
 
 /**
  * Site header: logo, centered search, cart + profile.
@@ -10,6 +11,7 @@ import { useState } from "react";
  */
 export function Header() {
   const [query, setQuery] = useState("");
+  const { itemCount } = useCart();
 
   return (
     <header className="bg-[#2b5a9e] shadow-sm">
@@ -43,6 +45,11 @@ export function Header() {
           >
             <ShoppingCart className="h-5 w-5" aria-hidden />
             <span className="hidden sm:inline">Cart</span>
+            {itemCount > 0 && (
+              <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-white px-1 text-xs font-bold text-[#1a2b4b]">
+                {itemCount > 99 ? "99+" : itemCount}
+              </span>
+            )}
           </Link>
           <button
             type="button"
