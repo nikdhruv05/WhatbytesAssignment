@@ -8,9 +8,15 @@ import {
 import { FilterSidebar } from "@/components/filter-sidebar";
 import { ProductCard } from "@/components/product-card";
 
+/** "Home" shows the full catalog on the home page (no dedicated home SKUs yet). */
+function categoryMatchesFilter(categoryId, productCategory) {
+  if (categoryId === "all" || categoryId === "home") return true;
+  return productCategory === categoryId;
+}
+
 function brandsForCategory(categoryId) {
   const list =
-    categoryId === "all"
+    categoryId === "all" || categoryId === "home"
       ? PRODUCTS
       : PRODUCTS.filter((p) => p.category === categoryId);
   return [...new Set(list.map((p) => p.brand))].sort();
@@ -18,7 +24,7 @@ function brandsForCategory(categoryId) {
 
 function getFilteredProducts({ category, priceMin, priceMax, brands }) {
   return PRODUCTS.filter((p) => {
-    if (category !== "all" && p.category !== category) return false;
+    if (!categoryMatchesFilter(category, p.category)) return false;
     if (p.price < priceMin || p.price > priceMax) return false;
     if (brands.length > 0 && !brands.includes(p.brand)) return false;
     return true;

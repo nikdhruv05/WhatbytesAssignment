@@ -30,13 +30,19 @@ export function FilterSidebar({
   onClearBrands,
 }) {
   const step = 10;
+  const span = priceBoundsMax - priceBoundsMin || 1;
+  const fillLeft = ((priceMin - priceBoundsMin) / span) * 100;
+  const fillWidth = ((priceMax - priceMin) / span) * 100;
+  const overlap = priceMax - priceMin < step * 3;
+  const zMin = overlap ? 5 : 3;
+  const zMax = overlap ? 4 : 5;
 
-  const setMin = (v) => {
+  const onMinInput = (v) => {
     const next = Math.min(Math.max(priceBoundsMin, v), priceMax);
     onPriceRangeChange(next, priceMax);
   };
 
-  const setMax = (v) => {
+  const onMaxInput = (v) => {
     const next = Math.max(Math.min(priceBoundsMax, v), priceMin);
     onPriceRangeChange(priceMin, next);
   };
@@ -72,49 +78,49 @@ export function FilterSidebar({
 
       <section className="mt-6 border-t border-white/10 pt-6">
         <h3 className="text-xs font-semibold uppercase tracking-wider text-white/70">
-          Price
+          Price range
         </h3>
-        <div className="mt-4 space-y-4">
-          <div>
-            <label className="mb-1 block text-xs text-white/70" htmlFor="price-min">
-              Min
-            </label>
-            <input
-              id="price-min"
-              type="range"
-              min={priceBoundsMin}
-              max={Math.min(priceMax, priceBoundsMax)}
-              step={step}
-              value={priceMin}
-              onChange={(e) => setMin(Number(e.target.value))}
-              className="h-2 w-full cursor-pointer appearance-none rounded-full bg-white/20 accent-white"
-              aria-valuemin={priceBoundsMin}
-              aria-valuemax={priceBoundsMax}
-              aria-valuenow={priceMin}
-            />
-          </div>
-          <div>
-            <label className="mb-1 block text-xs text-white/70" htmlFor="price-max">
-              Max
-            </label>
-            <input
-              id="price-max"
-              type="range"
-              min={Math.max(priceMin, priceBoundsMin)}
-              max={priceBoundsMax}
-              step={step}
-              value={priceMax}
-              onChange={(e) => setMax(Number(e.target.value))}
-              className="h-2 w-full cursor-pointer appearance-none rounded-full bg-white/20 accent-white"
-              aria-valuemin={priceBoundsMin}
-              aria-valuemax={priceBoundsMax}
-              aria-valuenow={priceMax}
-            />
-          </div>
+        <div className="dual-range-slider mt-4">
+          <div className="dual-range-track-bg" aria-hidden />
+          <div
+            className="dual-range-track-fill"
+            style={{ left: `${fillLeft}%`, width: `${fillWidth}%` }}
+            aria-hidden
+          />
+          <input
+            id="price-min"
+            type="range"
+            min={priceBoundsMin}
+            max={priceMax}
+            step={step}
+            value={priceMin}
+            onChange={(e) => onMinInput(Number(e.target.value))}
+            className="dual-range-input"
+            style={{ zIndex: zMin }}
+            aria-label="Minimum price"
+            aria-valuemin={priceBoundsMin}
+            aria-valuemax={priceBoundsMax}
+            aria-valuenow={priceMin}
+          />
+          <input
+            id="price-max"
+            type="range"
+            min={priceMin}
+            max={priceBoundsMax}
+            step={step}
+            value={priceMax}
+            onChange={(e) => onMaxInput(Number(e.target.value))}
+            className="dual-range-input"
+            style={{ zIndex: zMax }}
+            aria-label="Maximum price"
+            aria-valuemin={priceBoundsMin}
+            aria-valuemax={priceBoundsMax}
+            aria-valuenow={priceMax}
+          />
         </div>
         <div className="mt-3 flex justify-between text-sm font-medium tabular-nums">
-          <span>${priceMin}</span>
-          <span>${priceMax}</span>
+          <span>Min ${priceMin}</span>
+          <span>Max ${priceMax}</span>
         </div>
       </section>
 
